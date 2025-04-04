@@ -1,5 +1,8 @@
 import bcryptjs from 'bcryptjs'
 import jwt from 'jsonwebtoken'
+import { sendEmail } from '../config/emailService.js'
+import sendEmailFun from '../config/sendEmail.js';
+import verificationEmail from '../utils/verifyEmailTemplate.js';
 
 export async function registerUserController(request, response) {
   try {
@@ -38,10 +41,10 @@ export async function registerUserController(request, response) {
     })
     await user.save();
 
-    const verifyEmail = await sendEmail({
+    const verifyEmail = await sendEmailFun({
       sendTo: email,
       subject: "Verify Email from AgriMarket",
-      html: ''
+      html: verificationEmail(name, verifyCode)
     })
 
 
