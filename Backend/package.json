@@ -4,15 +4,17 @@
   "description": "AgriMarket Connect is a full-stack web platform designed to empower farmers by directly connecting them with buyers, eliminating middlemen, and ensuring fair pricing.",
   "license": "ISC",
   "author": "ByteBusters",
-  "type": "commonjs",
+  "type": "module",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon /Backend/index.js"
   },
   "dependencies": {
     "bcryptjs": "^3.0.2",
     "cloudinary": "^2.6.0",
     "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "express": "^5.1.0",
     "helmet": "^8.1.0",
