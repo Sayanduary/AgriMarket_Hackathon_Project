@@ -1,0 +1,25 @@
+{
+  "name": "agrimarket",
+  "version": "1.0.0",
+  "description": "AgriMarket Connect is a full-stack web platform designed to empower farmers by directly connecting them with buyers, eliminating middlemen, and ensuring fair pricing.",
+  "license": "ISC",
+  "author": "ByteBusters",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "bcryptjs": "^3.0.2",
+    "cloudinary": "^2.6.0",
+    "cookie-parser": "^1.4.7",
+    "dotenv": "^16.4.7",
+    "express": "^5.1.0",
+    "helmet": "^8.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.13.2",
+    "morgan": "^1.10.0",
+    "multer": "^1.4.5-lts.2",
+    "nodemon": "^3.1.9"
+  }
+}
