@@ -3,6 +3,7 @@ import jwt from 'jsonwebtoken'
 import { sendEmail } from '../config/emailService.js'
 import sendEmailFun from '../config/sendEmail.js';
 import verificationEmail from '../utils/verifyEmailTemplate.js';
+import { text } from 'express';
 
 export async function registerUserController(request, response) {
   try {
@@ -37,13 +38,17 @@ export async function registerUserController(request, response) {
     user = new UserModel({
       email: email,
       password: hashPassword,
-      name: name
+      name: name,
+      otp: verifyCode,
+      otpExpires: Date.now() * 600000
     })
+
     await user.save();
 
     const verifyEmail = await sendEmailFun({
       sendTo: email,
       subject: "Verify Email from AgriMarket",
+      text: '',
       html: verificationEmail(name, verifyCode)
     })
 
@@ -56,3 +61,10 @@ export async function registerUserController(request, response) {
     })
   }
 }
+
+// otp: {
+//   type: String
+// },
+// otpExpires: {
+//   type: Date
+// }
