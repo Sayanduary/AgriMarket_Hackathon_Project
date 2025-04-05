@@ -1,9 +1,10 @@
 // require('dotenv').config({path:'./env'});
 import dotenv from 'dotenv'
+
+dotenv.config({ path: './.env' });
 import { app } from './app.js';
 import { connectDB } from './db/index.js';
 
-dotenv.config({ path: './.env' });
 console.log("✅ ENV EMAIL:", process.env.EMAIL);
 console.log("✅ ENV EMAIL_PASS exists:", !!process.env.EMAIL_PASS);
 

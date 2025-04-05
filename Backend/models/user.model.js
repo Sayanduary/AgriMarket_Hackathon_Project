@@ -54,11 +54,14 @@ const userSchema = mongoose.Schema({
         }
     ],
     otp: {
-        type: String
+        code: String,
+        expiresAt: Date
     },
-    otpExpires: {
-        type: Date
+    isVerified: {
+        type: Boolean,
+        default: false
     }
+
 
     ,
     role: {
@@ -70,6 +73,10 @@ const userSchema = mongoose.Schema({
     {
         timestamps: true
     });
+
+
+    
+
 
 const userModel = mongoose.model("user", userSchema);
 
