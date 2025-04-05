@@ -1,11 +1,18 @@
-import {sendEmaild} from '../config/emailService.js'
-const sendEmailFun = async (to, subject, text, html) => {
-  const result = await sendEmail(to, subject, text, html);
+// sendEmailFun.js
+import sendEmail from '../config/emailService.js'
+
+
+
+const sendEmailFun = async ({ sendTo, subject, text, html }) => {
+  const result = await sendEmail(sendTo, subject, text, html);
   if (result.success) {
     return true;
-  } else; {
+  } else {
     return false;
   }
 }
 
 export default sendEmailFun;
+
+
+
