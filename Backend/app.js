@@ -3,7 +3,6 @@ import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import morgan from 'morgan';
 import helmet from 'helmet';
-import userRouter from './routes/user.route.js';
 
 const app = express(); // ✅ Move this to the top
 
@@ -20,7 +19,11 @@ app.use(helmet({
   crossOriginResourcePolicy: false,
 }));
 
+import userRouter from './routes/user.route.js';
+import { categoryRouter } from './routes/category.route.js';
+
 // Routes
 app.use('/api/user', userRouter);
+app.use('/api/category', categoryRouter);
 
 export { app };

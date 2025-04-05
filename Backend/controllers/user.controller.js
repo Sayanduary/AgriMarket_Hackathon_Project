@@ -382,3 +382,41 @@ export async function resetPasswordController(req, res) {
 
   return res.status(200).json({ message: "Password has been reset successfully." });
 }
+
+
+
+export async function userDetailsController(req, res) {
+  try {
+    // Get the token from the Authorization header
+    const token = req.header('Authorization')?.replace('Bearer ', '');
+    if (!token) {
+      return res.status(401).json({ message: 'Authentication required' });
+    }
+
+    // Verify the token
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    
+    // Fetch the user details from the database
+    const user = await userModel.findById(decoded.id).select('-password -otp'); // Exclude password and OTP from the response
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // Return the user details
+    return res.status(200).json({
+      success: true,
+      user: {
+        name: user.name,
+        email: user.email,
+        mobile: user.mobile,
+        avatar: user.avatar, // Assuming user has an avatar field
+      }
+    });
+
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message || 'Failed to retrieve user details'
+    });
+  }
+}

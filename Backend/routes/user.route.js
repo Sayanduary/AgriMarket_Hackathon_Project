@@ -6,7 +6,7 @@ import {
   verifyOtpController,
   userAvatarController,
   deleteImageController, updateUserDetailsController,
-  forgotPasswordController, resetPasswordController
+  forgotPasswordController, resetPasswordController,userDetailsController
 } from "../controllers/user.controller.js";
 import { uploadSingle, uploadMultiple } from '../config/multer.config.js';
 import { auth } from '../middleware/auth.middleware.js';
@@ -27,12 +27,12 @@ userRouter.post('/upload-avatars', auth, uploadMultiple, userAvatarController);
 
 userRouter.delete('/deleteImage', auth, deleteImageController)
 
-userRouter.put('/update-userDetails', auth, updateUserDetailsController);
+userRouter.put('/:id', auth, updateUserDetailsController);
 
 userRouter.post('/forgotPassword', auth, forgotPasswordController);
 
 userRouter.post('/resetPassword', auth, resetPasswordController);
 
-
+userRouter.get('/user-details',auth,userDetailsController)
 
 export default userRouter;

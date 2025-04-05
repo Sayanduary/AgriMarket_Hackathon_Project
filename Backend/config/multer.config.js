@@ -32,7 +32,5 @@ const fileFilter = function (req, file, cb) {
 };
 
 // Multer upload instances
-export const uploadSingle = multer({ storage, fileFilter }).single('avatar');
-// 👈 use 'avatar' here
-     // for 1 file
-export const uploadMultiple = multer({ storage, fileFilter }).array('images', 5);  // for up to 5 files
+export const uploadSingle = multer({ storage, fileFilter }).single('avatar'); // for 1 file
+export const uploadMultiple = multer({ storage, fileFilter }).array('images'); // for multiple files with no limit
