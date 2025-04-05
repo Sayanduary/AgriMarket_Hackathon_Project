@@ -7,7 +7,7 @@ dotenv.config({
   path: './.env'
 })
 
-
+//vid-34 (12:20) needs to add after code
 
 connectDB()
   .then(() => {
