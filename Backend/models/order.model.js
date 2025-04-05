@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const orderSchema = new mongoose.Schema({
     userID : {
-        type : mongoose.schema.ObjectId,
+        type : mongoose.Schema.ObjectId,
         ref : 'user'
     },
     oderId : {
@@ -11,7 +11,7 @@ const orderSchema = new mongoose.Schema({
         unique : true
     },
     productId : {
-        type : mongoose.schema.ObjectId,
+        type : mongoose.Schema.ObjectId,
         ref : "product"
     },
     product_details : {
@@ -27,7 +27,7 @@ const orderSchema = new mongoose.Schema({
         default : ""
     },
     delivary_address : {
-         type : mongoose.schema.ObjectId,
+         type : mongoose.Schema.ObjectId,
         ref : 'address'
     },
     subTotalAmt : {
