@@ -23,7 +23,7 @@ const userSchema = mongoose.Schema({
         default : null
     },
     verify_email: {
-        type : boolean,
+        type : Boolean,
         default : false
     },
     last_login_date: {
@@ -31,7 +31,7 @@ const userSchema = mongoose.Schema({
         default : ""
     },
     status : {
-        type : string,
+        type : String,
         enum : ["Active","Inactive","Suspended"],
         default : "Active"
     },

@@ -1,9 +1,10 @@
 import bcryptjs from 'bcryptjs'
 import jwt from 'jsonwebtoken'
-import { sendEmail } from '../config/emailService.js'
 import sendEmailFun from '../config/sendEmail.js';
 import verificationEmail from '../utils/verifyEmailTemplate.js';
-import { text } from 'express';
+
+import userModel from '../models/user.model.js'
+
 
 export async function registerUserController(request, response) {
   try {
@@ -18,7 +19,7 @@ export async function registerUserController(request, response) {
       })
     }
 
-    user = await UserModel.findOne({ email: email });
+    user = await userModel.findOne({ email: email });
     if (user) {
       return response.json({
         message: 'User already Registered with this email',
@@ -35,7 +36,7 @@ export async function registerUserController(request, response) {
     const salt = await bcryptjs.genSalt(10);
     const hashPassword = await bcryptjs.hash(password, salt);
 
-    user = new UserModel({
+    user = new userModel({
       email: email,
       password: hashPassword,
       name: name,
@@ -45,11 +46,22 @@ export async function registerUserController(request, response) {
 
     await user.save();
 
-    const verifyEmail = await sendEmailFun({
+    await sendEmailFun({
       sendTo: email,
       subject: "Verify Email from AgriMarket",
       text: '',
       html: verificationEmail(name, verifyCode)
+    })
+
+    const token = jwt.sign({
+      email: user.email, id: user._id
+    }, process.env.JSON_WEB_TOKEN_SECRET_KEY)
+
+    return response.status(200).json({
+      success: true,
+      error: false,
+      message: 'User Registered Succesfully! Please Verify your email',
+      token: token
     })
 
 
@@ -68,3 +80,4 @@ export async function registerUserController(request, response) {
 // otpExpires: {
 //   type: Date
 // }
+
