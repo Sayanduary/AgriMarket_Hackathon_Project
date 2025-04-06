@@ -10,7 +10,7 @@ import { auth } from '../middleware/auth.middleware.js';
 
 const categoryRouter = Router();
 
-categoryRouter.post('/createCategory', auth, createCategory)
+categoryRouter.post('/create', auth, createCategory)
 categoryRouter.post('/uploadImages/:categoryId', auth, uploadMultiple, uploadCategoryImages);
 categoryRouter.get('/', getCategories)
 categoryRouter.get('/count', auth, getCategoriesCount)
@@ -18,6 +18,6 @@ categoryRouter.get('/subcategory-count/:parentId', auth, getSubcategoryCount);
 categoryRouter.get('/:id', auth, getSingleCategory);
 categoryRouter.delete('/deleteCategory/:id',deleteCategory)
 
-
+//some more code need to be added  in vide 33 (1:35:56)
 
 export { categoryRouter };

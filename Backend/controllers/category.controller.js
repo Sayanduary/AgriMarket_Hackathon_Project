@@ -206,6 +206,9 @@ export async function getCategoriesCount(req, res) {
     });
   }
 }
+  
+//remove image from cloudinary function
+// export async function removeImageFromCloudinary(request,response){}
 
 export async function getSubcategoryCount(req, res) {
   try {

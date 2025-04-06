@@ -45,3 +45,93 @@ export async function deleteProduct(request, response){
     });
 
 }
+
+//get product
+export async function getProduct(request, response){
+    try {
+        const product = await productModel.findById(request.params.id).populate("catagory");
+
+        if(!product){
+            return response.status(404).json({
+                message : " The product is not found!",
+                error : true,
+                success : false
+            })
+        }
+
+          return response.status(200).json({
+            error : false,
+            success : true,
+            product : product
+          })
+
+    } catch (error) {
+       return response.status(500).json({
+        message : error.message || error,
+        error : true,
+        success : false
+
+       }) 
+    }
+}
+
+//delete image
+// export async function removeImageFromCloudinary(request,response){}
+
+
+
+//update prosuct
+export async function updateProduct(request, response){
+try {
+     const product = await productModel.findByIdAndUpdate(
+        request.params.id,
+        {
+            name : request.body.name,
+            subCat : request.body.subCat,
+            description : request .body .description,
+            images: request.body.images,
+            brand : request.body.brand,
+            price: request.body.price,
+            oldPrice : request.body.oldPrice,
+           catId : request.body.catId,
+           catName : request.body. catName,
+           subCat : request.body.subCat,
+           category : request.body. category,
+           thirdsubCatId: request.body.thirdsubCatId,
+            countInStock: request.body.  countInStock,
+            rating: request.body.  rating,
+            isFeatured: request.body.  isFeatured,
+            productRam: request.body.  productRam,
+            size: request.body.  size,
+            productWeight: request.body.  productWeight,
+            
+            
+
+
+     },{
+        new : true
+     });
+
+     if(!product){
+        response.status(404).json({
+            message : "the product can not be updated!",
+            status : false,
+        });
+     }
+
+     imagesArr =[];
+
+     return response.status(200).json({
+        message :"The product is updated",
+        error : false,
+        success:true,
+     })
+} catch (error) {
+    return response.status(500).json({
+        message : error.message || error,
+        error : true,
+        success : false
+
+       }) 
+}
+}
