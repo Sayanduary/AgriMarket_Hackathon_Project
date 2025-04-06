@@ -265,7 +265,7 @@ export async function updateUserDetailsController(req, res) {
   // If the user wants to update the email
   if (email && email !== user.email) {
     // Validate email format
-    if (!isEmail(email)) {
+    if (!email(email)) {
       return res.status(400).json({ message: 'Invalid email format' });
     }
 
