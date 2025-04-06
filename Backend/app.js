@@ -21,9 +21,12 @@ app.use(helmet({
 
 import userRouter from './routes/user.route.js';
 import { categoryRouter } from './routes/category.route.js';
+import productRouter from './routes/product.route.js';
 
 // Routes
 app.use('/api/user', userRouter);
 app.use('/api/category', categoryRouter);
+app.use('/api/product', productRouter);
+
 
 export { app };
