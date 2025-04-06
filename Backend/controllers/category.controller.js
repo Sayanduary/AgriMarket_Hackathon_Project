@@ -373,3 +373,114 @@ export async function deleteCategory(req, res) {
   }
 }
 
+
+export async function deleteCategoryImages(req, res) {
+  try {
+    // Get category ID from params and images to delete from body
+    const { categoryId } = req.params;
+    const { imagesToDelete } = req.body; // Expecting an array of image URLs
+
+    // Validate inputs
+    if (!categoryId) {
+      return res.status(400).json({
+        success: false,
+        message: "Category ID is required"
+      });
+    }
+
+    if (!imagesToDelete || !Array.isArray(imagesToDelete) || imagesToDelete.length === 0) {
+      return res.status(400).json({
+        success: false,
+        message: "Images to delete must be provided as a non-empty array"
+      });
+    }
+
+    // Verify the category exists
+    const category = await CategoryModel.findById(categoryId);
+    if (!category) {
+      return res.status(404).json({
+        success: false,
+        message: "Category not found"
+      });
+    }
+
+    // Verify all requested images exist in the category
+    const currentImages = category.images || [];
+    const invalidImages = imagesToDelete.filter(img => !currentImages.includes(img));
+    if (invalidImages.length > 0) {
+      return res.status(400).json({
+        success: false,
+        message: "Some images to delete were not found in the category",
+        invalidImages
+      });
+    }
+
+    // Delete images from Cloudinary
+    const deletionResults = [];
+    const deletePromises = imagesToDelete.map(async (imgUrl) => {
+      try {
+        // Extract public ID from Cloudinary URL
+        const urlArr = imgUrl.split('/');
+        const image = urlArr[urlArr.length - 1];
+        const publicId = image.split('.')[0];
+        
+        if (publicId) {
+          const result = await cloudinary.uploader.destroy(
+            `categories/${categoryId}/${publicId}`,
+            { resource_type: 'image' }
+          );
+          deletionResults.push({
+            url: imgUrl,
+            status: 'success',
+            result
+          });
+        }
+      } catch (error) {
+        console.error(`Failed to delete image ${imgUrl} from Cloudinary:`, error);
+        deletionResults.push({
+          url: imgUrl,
+          status: 'failed',
+          error: error.message
+        });
+      }
+    });
+
+    // Wait for all Cloudinary deletions to complete
+    await Promise.all(deletePromises);
+
+    // Update category by removing the images
+    const updatedCategory = await CategoryModel.findByIdAndUpdate(
+      categoryId,
+      { $pull: { images: { $in: imagesToDelete } } },
+      { new: true }
+    );
+
+    if (!updatedCategory) {
+      return res.status(500).json({
+        success: false,
+        message: "Failed to update category after image deletion"
+      });
+    }
+
+    // Check for any failed deletions
+    const failedDeletions = deletionResults.filter(result => result.status === 'failed');
+
+    return res.status(200).json({
+      success: failedDeletions.length === 0,
+      message: failedDeletions.length === 0 
+        ? "Category images deleted successfully" 
+        : "Some images were deleted, but there were issues",
+      data: {
+        category: updatedCategory,
+        deletionResults
+      }
+    });
+
+  } catch (error) {
+    console.error('Error in deleteCategoryImages:', error);
+    return res.status(500).json({
+      success: false,
+      message: error.message || "Failed to delete category images"
+    });
+  }
+}
